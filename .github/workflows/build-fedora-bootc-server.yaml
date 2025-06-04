@@ -1,4 +1,4 @@
-name: Build bootc image
+name: Build Fedora bootc server image
 on:
   schedule:
     - cron: "0 0 * * 5"
@@ -12,8 +12,8 @@ permissions:
   contents: write
   packages: write
 jobs:
-  fedora-bootc-image-build:
-    name: Build bootc image
+  fedora-bootc-server-image-build:
+    name: Build Fedora bootc server image
     runs-on: ubuntu-latest
     env:
       IMAGE_NAME: fedora-bootc-server
@@ -22,14 +22,14 @@ jobs:
     steps:
       - name: Clone the repository
         uses: actions/checkout@v4
-      - name: Use buildah bud to create the image
+      - name: Build the image using buildah-bud
         id: build-image
         uses: redhat-actions/buildah-build@v2
         with:
           image: ${{ env.IMAGE_NAME }}
           tags: latest ${{ github.sha }}
           containerfiles: ${{ env.CONTAINERFILE }}
-      - name: Log in to the GitHub Container registry
+      - name: Log in to GitHub Container registry
         uses: redhat-actions/podman-login@v1
         with:
           registry: ${{ env.REGISTRY }}
