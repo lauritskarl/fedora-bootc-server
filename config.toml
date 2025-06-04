@@ -1,0 +1,6 @@
+[customizations.installer.kickstart]
+contents = """
+%post --erroronfail
+bootc switch --mutate-in-place --transport registry ghcr.io/lauritskarl/fedora-bootc-server:latest
+%end
+"""
