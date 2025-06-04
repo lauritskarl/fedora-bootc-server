@@ -18,6 +18,7 @@ jobs:
     env:
       IMAGE_NAME: fedora-bootc-server
       REGISTRY: ghcr.io/lauritskarl
+      CONTAINERFILE: Containerfile
     steps:
       - name: Clone the repository
         uses: actions/checkout@v4
@@ -27,8 +28,7 @@ jobs:
         with:
           image: ${{ env.IMAGE_NAME }}
           tags: latest ${{ github.sha }}
-          containerfiles: |
-            ./Containerfile
+          containerfiles: ${{ env.CONTAINERFILE }}
       - name: Log in to the GitHub Container registry
         uses: redhat-actions/podman-login@v1
         with:
