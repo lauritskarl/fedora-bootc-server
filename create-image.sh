@@ -1,4 +1,6 @@
 #!/usr/bin/bash
+mkdir -p $(pwd)/output
+sudo podman pull ghcr.io/lauritskarl/fedora-bootc-server:latest
 sudo podman run \
     --rm \
     -it \
@@ -10,5 +12,6 @@ sudo podman run \
     -v $(pwd)/output:/output \
     quay.io/centos-bootc/bootc-image-builder:latest \
     --type raw \
+    --rootfs btrfs \
     --use-librepo=True \
     ghcr.io/lauritskarl/fedora-bootc-server:latest
