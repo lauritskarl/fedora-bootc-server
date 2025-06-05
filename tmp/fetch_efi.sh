@@ -1,12 +1,5 @@
-#!/bin/bash
 RELEASE=42
-mkdir -p /tmp/efi/boot/efi
-dnf install -y --downloadonly --releasever=$RELEASE --forcearch=aarch64 --installroot=/tmp/efi/ uboot-images-armv8 bcm283x-firmware bcm283x-overlays
-if [ -f "/tmp/efi/usr/share/uboot/rpi_arm64/u-boot.bin" ]; then
-    mv /tmp/efi/usr/share/uboot/rpi_arm64/u-boot.bin /tmp/efi/boot/efi/rpi-u-boot.bin
-    echo "Successfully moved u-boot.bin"
-else
-    echo "u-boot.bin not found at expected location"
-    find /tmp/efi -name "u-boot.bin" -type f
-    exit 1
-fi
+mkdir -p /tmp/RPi4boot/boot/efi/
+dnf download --resolve --releasever=$RELEASE --forcearch=aarch64 --destdir=/tmp/RPi4boot/ uboot-images-armv8 bcm283x-firmware bcm283x-overlays
+for rpm in /tmp/RPi4boot/*rpm; do rpm2cpio $rpm | sudo cpio -idv -D /tmp/RPi4boot/; done
+sudo mv /tmp/RPi4boot/usr/share/uboot/rpi_arm64/u-boot.bin /tmp/RPi4boot/boot/efi/rpi-u-boot.bin
